@@ -20,5 +20,5 @@
 - oUnit failed to install with opam - verify m4 package is installed
 
 ### Contribution
-- You are welcome to contribute more tests.
+- You are welcome to contribute more tests. Ask to be added as collaborator.
 - Although we have separated tests to a different units, we still calls inside to the Reader module functions.
