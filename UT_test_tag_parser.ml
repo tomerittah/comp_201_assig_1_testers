@@ -8,8 +8,7 @@ open OUnit2;;
 
 (* TESTER: test_tag_parser.ml *)
 let test_tag_1 test_ctxt = assert_equal (TagRef ("t10")) (Reader.read_sexpr "#{T10}");;
-let test_tag_2 test_ctxt = assert_equal (TagRef ("t10")) (Reader.read_sexpr "# {T10}");;
-let test_tag_3 test_ctxt = assert_equal (TagRef ("123")) (Reader.read_sexpr "#{123}");;
+let test_tag_2 test_ctxt = assert_equal (TagRef ("123")) (Reader.read_sexpr "#{123}");;
 let test_tagged_exp_1 test_ctxt = assert_equal (TaggedSexpr("x", Number (Int(1)))) (Reader.read_sexpr "#{x}=1");;
 let test_tagged_exp_2 test_ctxt = assert_equal (TaggedSexpr ("x", Pair (Symbol "a", TagRef "x")))
                                   (Reader.read_sexpr "#{x}=(a . #{x})");;
@@ -44,7 +43,6 @@ let tag_parser_tester_suite =
 "tag_parser_tester_suite">:::
  ["test_tag_1">:: test_tag_1;
   "test_tag_2">:: test_tag_2;
-  "test_tag_3">:: test_tag_3;
   "test_tagged_exp_1">:: test_tagged_exp_1;
   "test_tagged_exp_2">:: test_tagged_exp_2;
   "test_tagged_exp_3">:: test_tagged_exp_3;
