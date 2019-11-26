@@ -6,6 +6,7 @@
 open Reader;;
 open OUnit2;;
 
+let test_empty_program test_ctxt = assert_equal ([]) (Reader.read_sexprs "");;
 let test_program_1 test_ctxt = assert_equal ([Pair (Symbol "define", Pair (Symbol "x", Pair (Number (Int 1), Nil)))])
                                             (Reader.read_sexprs "(define x 1)");;
 let test_program_2 test_ctxt = assert_equal ([TaggedSexpr ("x", Number (Int 1));
@@ -47,7 +48,8 @@ let test_program_6 test_ctxt = assert_equal ([Pair (Pair (Number (Int 2), Nil), 
 
 let e2e_read_sexprs_tester_suite =
 "e2e_read_sexprs_tester_suite">:::
- ["test_program_1">:: test_program_1;
+ ["test_empty_program">:: test_empty_program;
+  "test_program_1">:: test_program_1;
   "test_program_2">:: test_program_2;
   "test_program_3">:: test_program_3;
   "test_program_4">:: test_program_4;
