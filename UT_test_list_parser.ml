@@ -16,6 +16,10 @@ let test_nested_list_1 test_ctxt = assert_equal (Pair (Pair (Number (Int 1), (Pa
                                               (Reader.read_sexpr "((1 (b)) 5)");;
 
 let test_empty_list test_ctxt = assert_equal (Nil) (Reader.read_sexpr "()");;
+let test_comment_in_list_1 test_ctxt = assert_equal (Pair (String "this", Nil)) (Reader.read_sexpr "(\"this\" ; hahahahahaa \n)");;
+let test_comment_in_list_2 test_ctxt = assert_equal ([Nil]) (Reader.read_sexprs "( ;sad\n )");;
+let test_comment_in_list_3 test_ctxt = assert_equal (Nil) (Reader.read_sexpr "( ;sad\n )");;
+
 
 let test_dotted_list_1 test_ctxt = assert_equal (Pair (Pair (Number (Int 1), Pair (Number (Int 5), Nil)), Number (Int 6)))
                                               (Reader.read_sexpr "((1 5) . 6)");;
@@ -36,6 +40,9 @@ let list_parser_tester_suite =
   "test_combined_list_1">:: test_combined_list_1;
   "test_nested_list_1">:: test_nested_list_1;
   "test_empty_list">:: test_empty_list;
+  "test_comment_in_list_1">:: test_comment_in_list_1;
+  "test_comment_in_list_2">:: test_comment_in_list_2;
+  "test_comment_in_list_3">:: test_comment_in_list_3;
 
   "test_dotted_list_1">:: test_dotted_list_1;
   "test_dotted_list_2">:: test_dotted_list_2;
