@@ -1,9 +1,14 @@
 # Compiler Principles - 2020/Fall Assignment 1 testers
 
-### Prerequisites
+### Prerequisites - HOME
 - Install external system dependency M4 - `$ sudo apt install m4`
 - Install oUnit using OPAM with non root user - `$ opam install ounit`
 - Source opam config with non root user -  `$ eval $(opam config env)`
+
+### Prerequisites - LAB
+- Initialize opam state (if not have already been Initialized) - `$ opam init`
+- Install oUnit using OPAM - `$ opam install ounit`
+- Source opam config -  `$ eval $(opam config env)`
 
 ### Files required
 - Clone the repo - `$ git clone https://github.com/tomerittah/comp_201_assig_1_testers.git`
