@@ -7,7 +7,7 @@ open Reader;;
 open OUnit2;;
 
 (* TESTER: test_comments_parser.ml *)
-let test_comment0 test_ctxt = assert_equal (Symbol "bb") (Reader.read_sexpr ";Ab\r\nBB");;
+let test_comment0 test_ctxt = assert_equal ([Symbol "sym1"; Symbol "sym2"]) (Reader.read_sexprs "sym1 ;Ab\r\nsym2");;
 let test_comment1 test_ctxt = assert_raises X_no_match (fun _ -> (Reader.read_sexpr ";Ab\r\n"));;
 
 let comments_parser_tester_suite =

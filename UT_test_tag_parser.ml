@@ -23,8 +23,8 @@ let test_tagged_exp_4 test_ctxt = assert_equal (
       (Pair (Number (Int 2),
         Pair (Number (Int 3),
          Pair (Pair (Number (Int 1), Pair (TagRef "foo", Nil)), Nil))), Nil))))) (Reader.read_sexpr "#{foo}=(2 3 (2 3 (1 #{foo})))");;
-let test_tagged_exp_5 test_ctxt = assert_equal (TaggedSexpr ("x", Pair (Symbol "a", TagRef "x")))
-                                 (Reader.read_sexpr ";comment \n #;  #;  #{x}=(a . #{x}) (1 2) #{x}=(a . #{x})   ");;
+let test_tagged_exp_5 test_ctxt = assert_equal ([TaggedSexpr ("x", Symbol "123az"); TaggedSexpr ("x", Pair (Symbol "a", TagRef "x"))])
+                                 (Reader.read_sexprs "#{x}=123AZ ;comment \n #;  #;  #{x}=(a . #{x}) (1 2) #{x}=(a . #{x})   ");;
 
 let test_tag_raises_1 test_ctxt = assert_raises X_this_should_not_happen (fun _ ->
                                   (Reader.read_sexpr "#{foo}=(#{foo}=1 2 3)"));;

@@ -42,8 +42,8 @@ let test_number_1 test_ctxt = assert_equal (Number (Float 123.555)) (Reader.read
 let test_number_2 test_ctxt = assert_equal (Number (Float 123.00555)) (Reader.read_sexpr "000123.00555");;
 let test_number_3 test_ctxt = assert_equal (Number (Int 1000)) (Reader.read_sexpr "0001000");;
 let test_number_4 test_ctxt = assert_equal ([Number (Float 1.2); Number(Float (3.45))]) (Reader.read_sexprs " 1.2 3.45");;
-let test_number_5 test_ctxt = assert_equal (Number (Float 23.4)) (Reader.read_sexpr ";hello its a comment\n ;another comment,,,, \n     23.4    ;another comment here.......\n");;
-let test_number_6 test_ctxt = assert_equal (Number (Float 57.4)) (Reader.read_sexpr ";hello its a comment\n ;another comment,,,, \n   #;  64.4 57.4    ;another comment here.......\n");;
+let test_number_5 test_ctxt = assert_equal ([Number (Float 53.2); Number (Float 23.4)]) (Reader.read_sexprs "53.2 ;hello its a comment\n ;another comment,,,, \n     23.4    ;another comment here.......\n");;
+let test_number_6 test_ctxt = assert_equal ([Number (Int (-1)); Number (Float 57.4)]) (Reader.read_sexprs "-001 ;hello its a comment\n ;another comment,,,, \n   #;  64.4 57.4    ;another comment here.......\n");;
 
 
 (* test no match exceptions raises. TODO: Fix failing asserts*)
