@@ -19,6 +19,8 @@ let test_empty_list test_ctxt = assert_equal (Nil) (Reader.read_sexpr "()");;
 let test_comment_in_list_1 test_ctxt = assert_equal (Pair (String "this", Nil)) (Reader.read_sexpr "(\"this\" ; hahahahahaa \n)");;
 let test_comment_in_list_2 test_ctxt = assert_equal ([Nil]) (Reader.read_sexprs "( ;sad\n )");;
 let test_comment_in_list_3 test_ctxt = assert_equal (Nil) (Reader.read_sexpr "( ;sad\n )");;
+let test_sexp_comment_in_list_1 test_ctxt = assert_equal (Nil) (Reader.read_sexpr "( #; 1 )");;
+let test_sexp_comment_in_list_2 test_ctxt = assert_equal ([Nil]) (Reader.read_sexprs "( #; 1 )");;
 
 
 let test_dotted_list_1 test_ctxt = assert_equal (Pair (Pair (Number (Int 1), Pair (Number (Int 5), Nil)), Number (Int 6)))
@@ -27,6 +29,8 @@ let test_dotted_list_2 test_ctxt = assert_equal (Pair (Number (Float 1.2), Numbe
                                               (Reader.read_sexpr "(1.2 . 3)");;
 let test_dotted_list_3 test_ctxt = assert_equal (Pair (Symbol ("a"), Symbol ("b")))
                                               (Reader.read_sexpr "(a . b)");;
+let test_dotted_list_4 test_ctxt = assert_equal (Pair (Symbol ("b"), Pair (Symbol ("a"), Symbol ("b"))))
+                                                (Reader.read_sexpr "(b a . b)");;
 
 let test_dotted_list_nested_1 test_ctxt = assert_equal (Pair (Symbol ("a"), (Pair (Symbol ("b"), Symbol ("c")))))
                                               (Reader.read_sexpr "(a . (b . c))");;
@@ -43,10 +47,14 @@ let list_parser_tester_suite =
   "test_comment_in_list_1">:: test_comment_in_list_1;
   "test_comment_in_list_2">:: test_comment_in_list_2;
   "test_comment_in_list_3">:: test_comment_in_list_3;
+  
+  "test_sexp_comment_in_list_1">:: test_sexp_comment_in_list_1;
+  "test_sexp_comment_in_list_2">:: test_sexp_comment_in_list_2;
 
   "test_dotted_list_1">:: test_dotted_list_1;
   "test_dotted_list_2">:: test_dotted_list_2;
   "test_dotted_list_3">:: test_dotted_list_3;
+  "test_dotted_list_4">:: test_dotted_list_4;
 
   "test_dotted_list_nested_1">:: test_dotted_list_nested_1;
   "test_dotted_list_nested_2">:: test_dotted_list_nested_2;

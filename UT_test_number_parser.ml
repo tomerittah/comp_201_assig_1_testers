@@ -24,7 +24,9 @@ let edge_int_space_to_float test_ctxt = assert_equal ([Number (Int 5); Number(Fl
 (* Test positive & negative floats *)
 
 let test_negetive_float_signed test_ctxt = assert_equal (Number (Float (-123.1))) (Reader.read_sexpr "-123.1");;
+let test_negetive_float_signed_2 test_ctxt = assert_equal (Number (Float (-0.4321))) (Reader.read_sexpr "-0.4321");;
 let test_positive_float_signed test_ctxt = assert_equal (Number (Float 123.1)) (Reader.read_sexpr "+123.1");;
+let test_positive_float_signed_2 test_ctxt = assert_equal (Number (Float 0.4321)) (Reader.read_sexpr "+0.4321");;
 let test_positive_float_not_signed test_ctxt = assert_equal (Number (Float 123.112)) (Reader.read_sexpr "123.112");;
 
 let test_negative_float_signed_whitespace_both_sides test_ctxt = assert_equal (Number (Float (-123.112))) (Reader.read_sexpr " -123.112  ");;
@@ -69,7 +71,9 @@ let number_parser_tester_suite =
   "edge_int_space_to_float">:: edge_int_space_to_float;
 
   "test_negetive_float_signed">:: test_negetive_float_signed;
+  "test_negetive_float_signed_2">:: test_negetive_float_signed_2;
   "test_positive_float_signed">:: test_positive_float_signed;
+  "test_positive_float_signed_2">:: test_positive_float_signed_2;
   "test_positive_float_not_signed">:: test_positive_float_not_signed;
 
   "test_negative_float_signed_whitespace_both_sides">:: test_negative_float_signed_whitespace_both_sides;
