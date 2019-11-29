@@ -6,6 +6,7 @@
 - Source opam config with non root user -  `$ eval $(opam config env)`
 
 ### Prerequisites - LAB
+- Enter bash shell - `$ bash`
 - Initialize opam state (if not have already been Initialized) - `$ opam init`
 - Install oUnit using OPAM - `$ opam install ounit`
 - Source opam config -  `$ eval $(opam config env)`
