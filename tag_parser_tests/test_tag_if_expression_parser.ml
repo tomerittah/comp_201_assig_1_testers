@@ -43,7 +43,7 @@ let test_tag_if_expression_parser_6 test_ctxt = assert_equal (If (Or [Const (Sex
 let test_tag_if_expression_parser_7 test_ctxt = assert_equal (Const (Sexpr (Bool false)))
                                                 (Tag_Parser.tag_parse_expression (Pair (Symbol "or", Nil)))
 
-let test_tag_if_expression_parser_8 test_ctxt = assert_equal ( Or [Const (Sexpr (Number (Int 7)))])
+let test_tag_if_expression_parser_8 test_ctxt = assert_equal (Const (Sexpr (Number (Int 7))))
                                                 (Tag_Parser.tag_parse_expression (Pair (Symbol "or", Pair (Number (Int 7), Nil))))
 
 

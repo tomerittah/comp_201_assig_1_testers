@@ -122,29 +122,28 @@ let test_tag_Applic_expressions_parser_2 test_ctxt = assert_equal ([LambdaSimple
                                              Nil))),
                                            Nil)))]));;
 
- (* (if x x x) (or (1 2 3)) (define (y . (z)) (+ y z)) *)
+(* (if x x x) (or 1 2 3) (define (y . (z)) (+ y z)) *)
  let test_tag_Applic_expressions_parser_3 test_ctxt = assert_equal ([If (Var "x", Var "x", Var "x");
                                                                      Or
-                                                                    [Applic (Const (Sexpr (Number (Int 1))),
-                                                                    [Const (Sexpr (Number (Int 2))); Const (Sexpr (Number (Int 3)))])];
+                                                                     [Const (Sexpr (Number (Int 1))); Const (Sexpr (Number (Int 2)));
+                                                                     Const (Sexpr (Number (Int 3)))];
                                                                     Def (Var "y",
                                                                     LambdaSimple (["z"],
                                                                     Applic (Var "+", [Var "y"; Var "z"])))
                                                                     ])
 
-   (Tag_Parser.tag_parse_expressions ([Pair (Symbol "if",
-                                        Pair (Symbol "x", Pair (Symbol "x", Pair (Symbol "x", Nil))));
+  (Tag_Parser.tag_parse_expressions ([Pair (Symbol "if",
+                                      Pair (Symbol "x", Pair (Symbol "x", Pair (Symbol "x", Nil))));
                                        Pair (Symbol "or",
-                                        Pair
-                                         (Pair (Number (Int 1), Pair (Number (Int 2), Pair (Number (Int 3), Nil))),
-                                         Nil));
+                                       Pair (Number (Int 1), Pair (Number (Int 2), Pair (Number (Int 3), Nil))));
                                        Pair (Symbol "define",
-                                        Pair (Pair (Symbol "y", Pair (Symbol "z", Nil)),
-                                         Pair (Pair (Symbol "+", Pair (Symbol "y", Pair (Symbol "z", Nil))), Nil)))]));;
+                                          Pair (Pair (Symbol "y", Pair (Symbol "z", Nil)),
+                                            Pair (Pair (Symbol "+", Pair (Symbol "y", Pair (Symbol "z", Nil))), Nil)))]
+                                            ));;
 
 (* Name the test cases and group them together *)
-let tag_lambda_expression_parser_tester_suite =
-"tag_lambda_expression_parser_tester_suite">:::
+let tag_applic_expression_parser_tester_suite =
+"tag_applic_expression_parser_tester_suite">:::
  ["test_tag_Applic_expression_parser_1">:: test_tag_Applic_expression_parser_1;
   "test_tag_Applic_expression_parser_2">:: test_tag_Applic_expression_parser_2;
   "test_tag_Applic_expression_parser_3">:: test_tag_Applic_expression_parser_3;
@@ -159,5 +158,5 @@ let tag_lambda_expression_parser_tester_suite =
 ;;
 
 let () =
-  run_test_tt_main tag_lambda_expression_parser_tester_suite
+  run_test_tt_main tag_applic_expression_parser_tester_suite
 ;;
