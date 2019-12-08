@@ -94,18 +94,19 @@ let test_tag_let_expression_parser_5 test_ctxt = assert_equal (Applic
                                                        Pair (Pair (Symbol "quote", Pair (Symbol "not", Nil)), Nil)))),
                                                    Nil)))));;
 
-(* (let (x (+ 5 5)) x) -> ((lambda (x) x) (+ 5 5)) *)
+(* (let ((x (+ 5 5))) x) -> ((lambda (x) x) (+ 5 5)) *)
 let test_tag_let_expression_parser_6 test_ctxt = assert_equal (Applic (LambdaSimple (["x"], Var "x"),
                                                                [Applic (Var "+",
                                                                  [Const (Sexpr (Number (Int 5))); Const (Sexpr (Number (Int 5)))])]))
-                          (Tag_Parser.tag_parse_expression (Pair (Symbol "let",
-                                                                   Pair
-                                                                    (Pair (Symbol "x",
-                                                                      Pair
-                                                                       (Pair (Symbol "+", Pair (Number (Int 5), Pair (Number (Int 5), Nil))),
-                                                                       Nil)),
-                                                                    Pair (Symbol "x", Nil)))
-                                                                    ));;
+                                     (Tag_Parser.tag_parse_expression (Pair (Symbol "let",
+                                                                        Pair
+                                                                         (Pair
+                                                                           (Pair (Symbol "x",
+                                                                             Pair
+                                                                              (Pair (Symbol "+", Pair (Number (Int 5), Pair (Number (Int 5), Nil))),
+                                                                              Nil)),
+                                                                           Nil),
+                                                                         Pair (Symbol "x", Nil)))));;
 
 let test_tag_let_expression_parser_7 test_ctxt = assert_equal (Applic
                                                                  (LambdaSimple (["x"; "y"],
