@@ -254,26 +254,23 @@ let test_tag_let_rec_expression_parser_1 test_ctxt = assert_equal (Applic (Lambd
     (let ((fact 'whatever)) (set! fact (lambda (n)
         (if (zero? n)
         1
-        (\* n (fact (- n 1)))))) (let () (fact 5))) ->
+        (\* n (fact (- n 1)))))) (fact 5)) ->
         ((lambda (fact) (set! fact (lambda (n)
         (if (zero? n)
         1
-        (\* n (fact (- n 1)))))) (let () (fact 5))) 'whatever)
+        (\* n (fact (- n 1)))))) (fact 5)) 'whatever)
       *)
 let test_tag_let_rec_expression_parser_2 test_ctxt = assert_equal (Applic
                                                                    (LambdaSimple (["fact"],
                                                                      Seq
                                                                       [Set (Var "fact",
                                                                         LambdaSimple (["n"],
-                                                                          If (Applic (Var "zero?", [Var "n"]), Const (Sexpr (Number (Int 1))),
-                                                                            Applic (Var "*",
-                                                                             [Var "n";
-                                                                              Applic (Var "fact",
-                                                                               [Applic (Var "-", [Var "n"; Const (Sexpr (Number (Int 1)))])])]))));
-                                                                       Applic
-                                                                        (LambdaSimple ([],
-                                                                          Applic (Var "fact", [Const (Sexpr (Number (Int 5)))])),
-                                                                        [])]),
+                                                                         If (Applic (Var "zero?", [Var "n"]), Const (Sexpr (Number (Int 1))),
+                                                                          Applic (Var "*",
+                                                                           [Var "n";
+                                                                            Applic (Var "fact",
+                                                                             [Applic (Var "-", [Var "n"; Const (Sexpr (Number (Int 1)))])])]))));
+                                                                       Applic (Var "fact", [Const (Sexpr (Number (Int 5)))])]),
                                                                    [Const (Sexpr (Symbol "whatever"))])
                                                                   )
                       (Tag_Parser.tag_parse_expression (Pair (Symbol "letrec",
@@ -304,6 +301,62 @@ let test_tag_let_rec_expression_parser_2 test_ctxt = assert_equal (Applic
                                                           Pair (Pair (Symbol "fact", Pair (Number (Int 5), Nil)), Nil)))
                                                         ));;
 
+  (* (letrec ((square (lambda (x) ( * x x))) (y 5)) (square y)) ->
+     (let ((square 'whatever) (y 'whatever)) (set! square (lambda (x) ( * x x))) (set! y 5) (square y)) ->
+     ((lambda (square y) (set! square (lambda (x) ( * x x))) (set! y 5) (square y)) 'whatever 'whatever)
+  *)
+  let test_tag_let_rec_expression_parser_3 test_ctxt = assert_equal (Applic
+                                                                       (LambdaSimple (["square"; "y"],
+                                                                         Seq
+                                                                          [Set (Var "square",
+                                                                            LambdaSimple (["x"], Applic (Var "*", [Var "x"; Var "x"])));
+                                                                           Set (Var "y", Const (Sexpr (Number (Int 5))));
+                                                                           Applic (Var "square", [Var "y"])]),
+                                                                       [Const (Sexpr (Symbol "whatever")); Const (Sexpr (Symbol "whatever"))])
+                                                                      )
+      (Tag_Parser.tag_parse_expression (Pair (Symbol "letrec",
+                                         Pair
+                                          (Pair
+                                            (Pair (Symbol "square",
+                                              Pair
+                                               (Pair (Symbol "lambda",
+                                                 Pair (Pair (Symbol "x", Nil),
+                                                  Pair (Pair (Symbol "*", Pair (Symbol "x", Pair (Symbol "x", Nil))),
+                                                   Nil))),
+                                               Nil)),
+                                            Pair (Pair (Symbol "y", Pair (Number (Int 5), Nil)), Nil)),
+                                          Pair (Pair (Symbol "square", Pair (Symbol "y", Nil)), Nil)))
+                                        ));;
+
+  (* (letrec ((mul (lambda (x y) ( * x y))) (y 5) (z 3)) (mul y z)) ->
+     (let ((mul 'whatever) (y 'whatever) (z 'whatever)) (set! mul (lambda (x y) ( * x y))) (set! y 5) (set! z 3) (mul y z)) ->
+     ((lambda (mul y z) (set! mul (lambda (x y) ( * x y))) (set! y 5) (set! z 3) (mul y z)) 'whatever 'whatever 'whatever)
+  *)
+  let test_tag_let_rec_expression_parser_4 test_ctxt = assert_equal (Applic
+                                                                     (LambdaSimple (["mul"; "y"; "z"],
+                                                                       Seq
+                                                                        [Set (Var "mul",
+                                                                          LambdaSimple (["x"; "y"], Applic (Var "*", [Var "x"; Var "y"])));
+                                                                         Set (Var "y", Const (Sexpr (Number (Int 5))));
+                                                                         Set (Var "z", Const (Sexpr (Number (Int 3))));
+                                                                         Applic (Var "mul", [Var "y"; Var "z"])]),
+                                                                     [Const (Sexpr (Symbol "whatever")); Const (Sexpr (Symbol "whatever"));
+                                                                      Const (Sexpr (Symbol "whatever"))]))
+      (Tag_Parser.tag_parse_expression (Pair (Symbol "letrec",
+                                         Pair
+                                          (Pair
+                                            (Pair (Symbol "mul",
+                                              Pair
+                                               (Pair (Symbol "lambda",
+                                                 Pair (Pair (Symbol "x", Pair (Symbol "y", Nil)),
+                                                  Pair (Pair (Symbol "*", Pair (Symbol "x", Pair (Symbol "y", Nil))),
+                                                   Nil))),
+                                               Nil)),
+                                            Pair (Pair (Symbol "y", Pair (Number (Int 5), Nil)),
+                                             Pair (Pair (Symbol "z", Pair (Number (Int 3), Nil)), Nil))),
+                                          Pair (Pair (Symbol "mul", Pair (Symbol "y", Pair (Symbol "z", Nil))), Nil)))
+                                        ));;
+
 (* Name the test cases and group them together *)
 let tag_let_expression_parser_tester_suite =
 "tag_let_expression_parser_tester_suite">:::
@@ -323,6 +376,8 @@ let tag_let_expression_parser_tester_suite =
 
   "test_tag_let_rec_expression_parser_1">:: test_tag_let_rec_expression_parser_1;
   "test_tag_let_rec_expression_parser_2">:: test_tag_let_rec_expression_parser_2;
+  "test_tag_let_rec_expression_parser_3">:: test_tag_let_rec_expression_parser_3;
+  "test_tag_let_rec_expression_parser_4">:: test_tag_let_rec_expression_parser_4;
   ]
 ;;
 
