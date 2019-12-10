@@ -6,13 +6,13 @@
 open Tag_Parser;;
 open OUnit2;;
 
-(* (define (x . (y)) 23) -> (define x (lambda (y) y)) *)
+(* (define (x . (y)) 23) -> (define x (lambda (y) 23)) *)
 let test_tag_define_mit_expression_parser_1 test_ctxt = assert_equal (Def (Var "x", LambdaSimple (["y"], Const (Sexpr (Number (Int 23))))))
   (Tag_Parser.tag_parse_expression (Pair (Symbol "define",
                                      Pair (Pair (Symbol "x", Pair (Symbol "y", Nil)),
                                       Pair (Number (Int 23), Nil)))));;
 
-(* (define (x . (y z) 23)) -> (define x (lambda (y z) (+ y z))) *)
+(* (define (x . (y z)) (+ y z)) -> (define x (lambda (y z) (+ y z))) *)
 let test_tag_define_mit_expression_parser_2 test_ctxt = assert_equal (Def (Var "x",
                                                           LambdaSimple (["y"; "z"], Applic (Var "+", [Var "y"; Var "z"]))))
   (Tag_Parser.tag_parse_expression (Pair (Symbol "define",
