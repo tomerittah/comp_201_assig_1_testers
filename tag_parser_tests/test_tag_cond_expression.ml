@@ -106,10 +106,10 @@ let test_tag_cond_expression_parser_3 text_ctxt = assert_equal (If
                                           Nil)))))));;
 
 let test_tag_cond_expression_parser_4 text_ctxt = assert_equal (Applic
-                                              (LambdaSimple (["value"; "f"],
-                                                If (Var "value", Applic (Applic (Var "f", []), [Var "value"]), Const Void)),
-                                              [Applic (Var "h?", [Var "x"]);
-                                                LambdaSimple ([], Applic (Var "p", [Var "q"]))]))
+                                                (LambdaSimple (["value"; "f"],
+                                                  If (Var "value", Applic (Applic (Var "f", []), [Var "value"]), Const Void)),
+                                                [Applic (Var "h?", [Var "x"]);
+                                                  LambdaSimple ([], Applic (Var "p", [Var "q"]))]))
           (Tag_Parser.tag_parse_expression (Pair (Symbol "cond",
                                     Pair
                                       (Pair (Pair (Symbol "h?", Pair (Symbol "x", Nil)),
@@ -118,13 +118,15 @@ let test_tag_cond_expression_parser_4 text_ctxt = assert_equal (Applic
 
 
 let test_tag_cond_expression_parser_5 text_ctxt = assert_equal (If (Applic (Var "zero?", [Var "n"]),
-                                                  Seq [Applic (Var "f", [Var "x"]); Applic (Var "g", [Var "y"])],
-                                                  Applic
-                                                    (LambdaSimple (["value"; "f"],
-                                                      If (Var "value", Applic (Applic (Var "f", []), [Var "value"]),
-                                                      Seq [Applic (Var "h", [Var "x"; Var "y"]); Applic (Var "g", [Var "x"])])),
-                                                    [Applic (Var "h?", [Var "x"]);
-                                                    LambdaSimple ([], Applic (Var "p", [Var "q"]))])))
+                                            Seq [Applic (Var "f", [Var "x"]); Applic (Var "g", [Var "y"])],
+                                            Applic
+                                              (LambdaSimple (["value"; "f"; "rest"],
+                                                If (Var "value", Applic (Applic (Var "f", []), [Var "value"]),
+                                                Applic (Var "rest", []))),
+                                              [Applic (Var "h?", [Var "x"]);
+                                              LambdaSimple ([], Applic (Var "p", [Var "q"]));
+                                              LambdaSimple ([],
+                                                Seq [Applic (Var "h", [Var "x"; Var "y"]); Applic (Var "g", [Var "x"])])])))
             (Tag_Parser.tag_parse_expression (Pair (Symbol "cond",
                                               Pair
                                                 (Pair (Pair (Symbol "zero?", Pair (Symbol "n", Nil)),
@@ -146,13 +148,13 @@ let test_tag_cond_expression_parser_5 text_ctxt = assert_equal (If (Applic (Var 
 
 
 let test_tag_cond_expression_parser_6 text_ctxt = assert_equal (If (Applic (Var "zero?", [Var "n"]),
-                                                    Seq [Applic (Var "f", [Var "x"]); Applic (Var "g", [Var "y"])],
-                                                    Applic
-                                                      (LambdaSimple (["value"; "f"],
-                                                        If (Var "value", Applic (Applic (Var "f", []), [Var "value"]),
-                                                        Const Void)),
-                                                      [Applic (Var "h?", [Var "x"]);
-                                                      LambdaSimple ([], Applic (Var "p", [Var "q"]))])))
+                                            Seq [Applic (Var "f", [Var "x"]); Applic (Var "g", [Var "y"])],
+                                            Applic
+                                              (LambdaSimple (["value"; "f"],
+                                                If (Var "value", Applic (Applic (Var "f", []), [Var "value"]),
+                                                Const Void)),
+                                              [Applic (Var "h?", [Var "x"]);
+                                              LambdaSimple ([], Applic (Var "p", [Var "q"]))])))
             (Tag_Parser.tag_parse_expression (Pair (Symbol "cond",
                                                 Pair
                                                   (Pair (Pair (Symbol "zero?", Pair (Symbol "n", Nil)),
@@ -176,18 +178,19 @@ let test_tag_cond_expression_parser_7 text_ctxt = assert_equal (If (Applic (Var 
 
 
 let test_tag_cond_expression_parser_8 text_ctxt = assert_equal (If (Var "x", Var "x",
-                                                Applic
-                                                  (LambdaSimple (["value"; "f"],
-                                                    If (Var "value", Applic (Applic (Var "f", []), [Var "value"]),
-                                                    Var "value")),
-                                                  [LambdaSimple (["x"], Var "x");
-                                                  LambdaSimple ([], LambdaSimple (["x"], Applic (Var "x", [])))])))    
+                                            Applic
+                                              (LambdaSimple (["value"; "f"; "rest"],
+                                                If (Var "value", Applic (Applic (Var "f", []), [Var "value"]),
+                                                Applic (Var "rest", []))),
+                                              [LambdaSimple (["x"], Var "x");
+                                              LambdaSimple ([], LambdaSimple (["x"], Applic (Var "x", [])));
+                                              LambdaSimple ([], Var "value")])))    
 
                     (Tag_Parser.tag_parse_expression (Pair (Symbol "cond", Pair (Pair (Symbol "x", Pair (Pair (Symbol "begin",
                     Pair (Symbol "x", Nil)), Nil)), Pair (Pair (Pair (Symbol "lambda", Pair (Pair (Symbol "x", Nil),
                       Pair (Symbol "x", Nil))), Pair (Symbol "=>", Pair (Pair (Symbol "cond", Pair (Pair (Symbol "else", Pair 
                       (Pair (Symbol "lambda", Pair (Pair (Symbol "x", Nil), Pair (Pair (Symbol "x", Nil), Nil))), Nil)), Nil)), Nil))),
-                      Pair (Pair (Symbol "else", Pair (Symbol "value", Nil)), Nil))))))
+                      Pair (Pair (Symbol "else", Pair (Symbol "value", Nil)), Nil))))));;
 
 (* Name the test cases and group them together *)
 let tag_cond_expression_expension_tester_suite =
