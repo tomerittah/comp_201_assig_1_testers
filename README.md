@@ -6,11 +6,10 @@
 - Source opam config with non root user -  `$ eval $(opam config env)`
 
 ### Prerequisites - LAB
+- Change shell to bash - `$ bash`
 - Initialize opam state (if not have already been Initialized) - `$ opam init`
 - Install oUnit using OPAM - `$ opam install ounit`
-- Create set env script - `$ opam config env | awk '{print "export "$2"="$3}' > set_env.sh; chmod +x set_env.sh`
-- Change shell to bash - `$ bash`
-- Exec set env script opam config -  `$ ./set_env.sh`
+- Source opam config -  `$ eval $(opam config env --shell bash)`
 
 ### Files required
 - Clone the repo - `$ git clone https://github.com/tomerittah/comp_201_assig_1_testers.git`
